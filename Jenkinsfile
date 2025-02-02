@@ -1,18 +1,24 @@
 pipeline {
     agent any
-    environment {
-        DOCKER_CREDENTIALS_ID = 'docker-hub-credentials'
-        DOCKER_IMAGE = 'MohamedTaha55/simple_flask_app'
-    }
     stages {
-        stage('Build and Push Docker Image') {
+        stage('build') {
             steps {
                 script {
-                    def image = docker.build(DOCKER_IMAGE, '.')
                     docker.withRegistry('https://index.docker.io/v1/', 'dockerhub_credential') {
-                        image.push('latest')
+                        def customImage = docker.build("MohamedTaha55/flaskapp_v:0.0.1")
+                        customImage.push()
                     }
                 }
+            }
+        }
+        stage('package') {
+            steps {
+                sh 'echo packaging....'
+            }
+        }
+        stage('test') {
+            steps {
+                sh 'echo testing......'
             }
         }
     }

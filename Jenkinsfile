@@ -1,5 +1,6 @@
 pipeline {
     agent any
+
     stages {
         stage('build') {
             steps {
@@ -11,14 +12,30 @@ pipeline {
                 }
             }
         }
+        
         stage('package') {
             steps {
                 sh 'echo packaging....'
             }
         }
+
         stage('test') {
+            agent {
+                docker {
+                    image 'ubuntu:latest'  
+                }
+            }
             steps {
                 sh 'echo testing......'
+            }
+        }
+
+        stage('deploy') {
+            input {
+                message "Do you want to deploy the container?"
+            }
+            steps {
+                sh 'docker run -d --name flaskapp -p 5555:5000 MohamedTaha55/flaskapp_v:0.0.1'
             }
         }
     }

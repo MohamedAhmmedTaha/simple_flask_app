@@ -6,7 +6,7 @@ pipeline {
             steps {
                 script {
                     docker.withRegistry('https://index.docker.io/v1/', 'dockerhub_credential') {
-                        def customImage = docker.build("MohamedTaha55/flaskapp_v:0.0.1")
+                        def customImage = docker.build("mohamedtaha55/flaskapp_v:0.0.1")
                         customImage.push()
                     }
                 }
@@ -35,7 +35,7 @@ pipeline {
                 message "Do you want to deploy the container?"
             }
             steps {
-                sh 'docker run -d --name flaskapp -p 5555:5000 MohamedTaha55/flaskapp_v:0.0.1'
+                sh 'docker run -d --name flaskapp -p 5555:5000 mohamedtaha55/flaskapp_v:0.0.1'
             }
         }
     }
